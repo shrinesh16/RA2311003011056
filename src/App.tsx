@@ -11,10 +11,11 @@ function App() {
 
   useEffect(() => {
     let mounted = true;
-    
+
     const loadData = async () => {
       try {
         setLoading(true);
+        setError(null);
         Log("frontend", "info", "page", "App component mounted, fetching data");
         const data = await fetchNotifications();
         if (mounted) {
@@ -45,7 +46,7 @@ function App() {
       <header className="app-header">
         <h1>Campus Notifications</h1>
       </header>
-      
+
       <main className="app-main">
         {loading && <p className="loading">Loading notifications...</p>}
         {error && <p className="error">{error}</p>}

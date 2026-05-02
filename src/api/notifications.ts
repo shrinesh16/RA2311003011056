@@ -13,7 +13,7 @@ export const fetchNotifications = async (): Promise<Notification[]> => {
   const token = localStorage.getItem("access_token");
   
   try {
-    const response = await fetch("http://20.207.122.201/evaluation-service/notifications", {
+    const response = await fetch("/evaluation-service/notifications", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
