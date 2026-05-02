@@ -1,73 +1,93 @@
-# React + TypeScript + Vite
+# Campus Notification System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React + TypeScript (Vite) frontend application for a campus notification system that fetches, sorts, filters, and displays campus notifications.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Fetch Notifications** from a REST API with Bearer token authentication
+- **Priority Sorting**: Placement > Result > Event, then by latest timestamp
+- **Top 10 Notifications**: Returns the top 10 sorted notifications
+- **Filter by Type**: Filter notifications by Event, Result, or Placement
+- **Logging Middleware**: All actions are logged to a remote evaluation service
+- **Fallback Data**: Gracefully handles API failures with cached notification data
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Screenshots
 
-## Expanding the ESLint configuration
+### Loading State
+The app shows a loading indicator while fetching notifications from the API.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+![Loading State](screenshots/01-loading.png)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### All Notifications (Default View)
+Displays all notifications sorted by priority (Placement → Result → Event) and then by timestamp.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+![All Notifications](screenshots/02-all-types.png)
+
+---
+
+### Filter: Result
+Shows only **Result** type notifications (mid-sem, project-review, external).
+
+![Result Filter](screenshots/03-result-filter.png)
+
+---
+
+### Filter: Event
+Shows only **Event** type notifications (farewell, tech-fest).
+
+![Event Filter](screenshots/04-event-filter.png)
+
+---
+
+### Filter: Placement
+Shows only **Placement** type notifications (CSX Corporation hiring, Advanced Micro Devices Inc. hiring).
+
+![Placement Filter](screenshots/05-placement-filter.png)
+
+---
+
+## Project Structure
+
+```
+/src
+  /api                    # API services (auth, notifications)
+  /components             # React components (NotificationList, NotificationItem)
+  /hooks                  # Custom React hooks
+  /logging_middleware      # Logging middleware (logger.ts)
+  /pages                  # Page components
+  /utils                  # Utility functions
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Tech Stack
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **React 19** + **TypeScript**
+- **Vite** (build tool & dev server with HTTPS proxy)
+- **Vanilla CSS** (no Tailwind)
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Logging Middleware
+
+The `Log()` function sends structured logs to the evaluation service:
+
+```typescript
+Log(stack, level, package, message)
+```
+
+- **stack**: `"frontend"`
+- **level**: `"debug"` | `"info"` | `"warn"` | `"error"` | `"fatal"`
+- **package**: `"api"` | `"component"` | `"hook"` | `"page"` | `"state"` | `"style"` | `"utils"` | `"middleware"`
+
+## Setup & Run
+
+```bash
+npm install
+npm run dev
+```
+
+Set your access token in the browser console:
+```javascript
+localStorage.setItem('access_token', 'YOUR_TOKEN_HERE');
 ```

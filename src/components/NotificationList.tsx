@@ -21,9 +21,9 @@ export const NotificationList: React.FC<Props> = ({ notifications }) => {
     Log("frontend", "info", "component", `View changed to ${newView}`);
   };
 
-  let filteredList = filter === 'All' 
-    ? notifications 
-    : notifications.filter(n => n.type === filter);
+  let filteredList = filter === 'All'
+    ? notifications
+    : notifications.filter(n => n.Type === filter);
 
   if (view === 'Top10') {
     filteredList = filteredList.slice(0, 10);
@@ -33,14 +33,14 @@ export const NotificationList: React.FC<Props> = ({ notifications }) => {
     <div className="notification-list-container">
       <div className="controls">
         <div className="view-controls">
-          <button 
-            className={view === 'All' ? 'active' : ''} 
+          <button
+            className={view === 'All' ? 'active' : ''}
             onClick={() => handleViewChange('All')}
           >
             All Notifications
           </button>
-          <button 
-            className={view === 'Top10' ? 'active' : ''} 
+          <button
+            className={view === 'Top10' ? 'active' : ''}
             onClick={() => handleViewChange('Top10')}
           >
             Top 10 Notifications
@@ -61,7 +61,7 @@ export const NotificationList: React.FC<Props> = ({ notifications }) => {
           <p className="no-data">No notifications found.</p>
         ) : (
           filteredList.map((notif, index) => (
-            <NotificationItem key={notif.id || index} notification={notif} />
+            <NotificationItem key={notif.ID || index} notification={notif} />
           ))
         )}
       </div>
